@@ -1,0 +1,27 @@
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution:
+    def mergeKLists(self, lists: List[ListNode]) -> ListNode:
+        k = len(lists)
+        q = self.mergeKLists_sub(lists,k)
+        return q
+    
+    def mergeKLists_sub(self,lists,k) -> ListNode:
+        min = 2131421
+        pos = -1
+        temp = None
+        for i in range(k):
+            if lists[i]:
+                if lists[i].val < min:
+                    min = lists[i].val
+                    pos = i
+        if pos != -1:
+            temp = lists[pos]
+            lists[pos] = lists[pos].next
+            p = self.mergeKLists_sub(lists,k)
+            temp.next = p 
+        return temp
