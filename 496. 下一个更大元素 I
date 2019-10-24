@@ -1,0 +1,26 @@
+class Solution:
+    def nextGreaterElement(self, nums1: List[int], nums2: List[int]) -> List[int]:
+        answers = []
+        help = self.helper(nums2)
+        print(help)
+        for i in nums1:
+            try:
+                index = nums2.index(i)
+            except:
+                answers.append(-1)
+            answers.append(help[index])
+        return answers
+            
+    def helper(self,nums: List[int]) -> List[int]:
+        answers = []
+        size = len(nums)
+        for i in range(size):
+            answers.append(0)
+        stack = []
+        for i in range(len(nums)-1,-1,-1):
+            while (stack and stack[-1]<nums[i]):
+                stack = stack[:-1]
+            answers[i] = -1 if not stack else stack[-1]
+            stack.append(nums[i])
+        return answers
+        
