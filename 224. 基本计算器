@@ -1,0 +1,57 @@
+class Solution:
+    def calculate(self, s: str) -> int:
+        pl = self.to_pl(s)
+        print(pl)
+        num = self.cal_pl(pl)
+        return int(num)
+    
+    def to_pl(self, s: str) -> str:
+        s = re.split('(\W)',s)
+        result = []
+        stack = []
+        priors = {'+':1,'-':1,'*':2,'/':2,'%':2}
+        for i in range(len(s)):
+            if s[i] == ' ' or s[i] == '':
+                continue
+            elif s[i] == '(':
+                stack.append('(')
+            elif s[i] == ')':
+                while stack[-1] != '(':
+                    result.append(stack.pop())
+                stack.pop()
+            elif s[i] in priors.keys():
+                while(stack and stack[-1] in priors.keys() and priors[s[i]] <= priors[stack[-1]]):
+                    result.append(stack.pop())
+                stack.append(s[i])
+            else:
+                result.append(s[i])
+        while(stack):
+            result.append(stack.pop())
+        return result
+    
+    def cal_pl(self,pl: List) -> int:
+        num = 0
+        stack = []
+        for i in range(len(pl)):
+            if pl[i] in ['+','-','/','*','%']:
+                a = stack.pop()
+                b = stack.pop()
+                if pl[i] == '+':
+                    print(a,b)
+                    temp = b+a
+                elif pl[i] == '-':
+                    temp = b-a
+                elif pl[i] == '/':
+                    if a == 0:
+                        return None
+                    temp = b/a
+                elif pl[i] == '*':
+                    temp = b*a
+                elif pl[i] == '%':
+                    if a == 0:
+                        return None
+                    temp = b%a
+                stack.append(temp)
+            else:
+                stack.append(float(pl[i]))
+        return stack[-1]
