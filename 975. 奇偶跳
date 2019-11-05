@@ -1,0 +1,29 @@
+class Solution:
+    def oddEvenJumps(self, A: List[int]) -> int:
+        n = len(A)
+        B_even = sorted(range(n),key = lambda i:A[i])
+        B_odd = sorted(range(n),key = lambda i:-A[i])
+        even_next = self.make_even(B_even)
+        odd_next = self.make_even(B_odd)
+        
+        even = [False]*n
+        odd = [False]*n
+        
+        odd[n-1] = even[n-1] = True
+
+        for i in range(n-2, -1, -1):
+            if odd_next[i] is not None:
+                odd[i] = even[odd_next[i]]
+            if even_next[i] is not None:
+                even[i] = odd[even_next[i]]
+
+        return sum(even)
+        
+    def make_even(self,B):
+        result = [None]*len(B)
+        stack = []
+        for i in B:
+            while(stack and stack[-1] < i):
+                result[stack.pop()] = i
+            stack.append(i)
+        return result
