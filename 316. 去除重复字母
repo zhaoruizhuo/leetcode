@@ -1,0 +1,19 @@
+class Solution:
+    def removeDuplicateLetters(self, s: str) -> str:
+        count = {}
+        for st in s:
+            if st in count.keys():
+                count[st] += 1
+            else:
+                count[st] = 1
+        stack = []
+        for i in range(len(s)):
+            if s[i] in stack:
+                count[s[i]] -= 1
+                continue
+            while(stack and stack[-1] > s[i] and count[stack[-1]]>1):
+                top = stack.pop()
+                count[top] = count[top]-1
+            stack.append(s[i])
+        return ''.join(stack)
+                
