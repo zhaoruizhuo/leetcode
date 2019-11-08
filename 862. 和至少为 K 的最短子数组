@@ -1,0 +1,17 @@
+class Solution:
+    def shortestSubarray(self, A: List[int], K: int) -> int:
+        sum_i = [0]
+        n = len(A)
+        ans = n+1
+        for x in A:
+            sum_i.append(sum_i[-1]+x)
+        queue = collections.deque()
+        for i, s in enumerate(sum_i):
+            while(queue and sum_i[queue[-1]] >= s):
+                queue.pop()
+            while(queue and s-sum_i[queue[0]] >= K):
+                ans = min(ans, i - queue.popleft())
+            queue.append(i)
+        if ans == n+1:
+            return -1
+        return ans
