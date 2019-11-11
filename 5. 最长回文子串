@@ -1,0 +1,33 @@
+class Solution:
+    def longestPalindrome(self, s: str) -> str:
+        size = len(s)
+        if size<2: 
+            return s
+        s_p = ''
+        for i in range(size):
+            s_p = s_p + '#' + s[i]
+        s_p += '#'
+        print(s_p)
+        p_size = 2*size+1
+        p = [0] * p_size
+        mx = 0
+        id = 0
+        ml = 1
+        start = 1
+        for i in range(p_size):
+            if mx > i :
+                p[i] = min(p[2*id-i],mx-i)
+            left = i-p[i]-1
+            right = i+p[i]+1
+            while(left>=0 and right < p_size and s_p[left] == s_p[right]):
+                p[i] += 1
+                left -=1
+                right +=1
+            if (mx < i+p[i]):
+                mx = i + p[i]
+                id = i
+            if p[i] > ml:
+                ml = p[i]
+                start = (i-ml)//2
+        return s[start:start+ml]
+        
